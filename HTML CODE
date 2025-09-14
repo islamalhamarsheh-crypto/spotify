@@ -1,9 +1,4 @@
-var x = 
-CALCULATE(MAX('spotify-2023-with-covers'[cover_url]),
-'spotify-2023-with-covers'[streams]=max('spotify-2023-with-covers'[streams])
-)
-RETURN
-"
+
 
 <!DOCTYPE html>
 <html lang='en'>
