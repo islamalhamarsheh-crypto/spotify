@@ -1,0 +1,132 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width":240,
+  "height": 240,
+  "padding": 10,
+  
+  "signals": [
+    {
+      "name": "percent",
+      "value": 0,
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 50},
+          "update": "percent < 65 ? percent + 1 : percent"  /* increase percent up to 65 */
+        }
+      ]
+    }
+  ],
+
+  "data": [
+    {
+      "name": "back",
+      "transform": [
+        {"type": "sequence", "start": 0, "stop": 100, "step": 1, "as": "val"},  /* create sequence 0-100 */
+        {"type": "formula", "expr": "1", "as": "t"},  /* constant value for pie */
+        {"type": "pie", "field": "t", "startAngle": 0, "endAngle": 6.28318530718}  /* full circle */
+      ]
+    },
+    {
+      "name": "front",
+      "transform": [
+        {"type": "sequence", "start": 0, "stop": {"signal": "percent"}, "step": 1, "as": "val"},  /* sequence up to percent */
+        {"type": "formula", "expr": "1", "as": "t"},  /* constant value for pie */
+        {"type": "pie", "field": "t", "startAngle": 0, "endAngle": {"signal": "((2*PI)/100)*percent"}}  /* angle based on percent */
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {"data": "back", "field": "val"},
+      "range": ["#1db954", "#036d19"]  /* green gradient for front arc */
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "arc",
+      "from": {"data": "back"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "#3f424e"},  /* background color */
+          "x": {"signal": "width/2"},
+          "y": {"signal": "height/2"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "padAngle": {"value": 0.015},  /* small gap between arcs */
+          "innerRadius": {"signal": "(width/2)-15"},  /* inner radius of arc */
+          "outerRadius": {"signal": "width/2"}  /* outer radius of arc */
+        }
+      }
+    },
+    {
+      "type": "arc",
+      "from": {"data": "front"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color", "field": "val"},  /* front arc color */
+          "x": {"signal": "width/2"},
+          "y": {"signal": "height/2"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "padAngle": {"value": 0.015},
+          "innerRadius": {"signal": "(width/2)-15"},
+          "outerRadius": {"signal": "width/2"}
+        }
+      }
+    },
+    {
+      "type": "arc",
+      "encode": {
+        "enter": {
+          "fill": {"value": "#b3b3b3"},  /* inner ring color */
+          "x": {"signal": "width/2"},
+          "y": {"signal": "height/2"}
+        },
+        "update": {
+          "startAngle": {"value": 0},
+          "endAngle": {"value": 6.28318530718},
+          "innerRadius": {"signal": "(width/2)-25"},
+          "outerRadius": {"signal": "(width/2)-20"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "text": {"signal": "percent + '%'"},
+          "align": {"value": "center"},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#14d8cc"},  /* text color */
+          "x": {"signal": "width/2"},
+          "y": {"signal": "height/2"},
+          "dy": {"value": 10},
+          "fontSize": {"value": 70}  /* font size for percent */
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "text": {"value": "Energy"},  /* label below percent */
+          "align": {"value": "center"},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#b3b3b3"},  /* text color */
+          "x": {"signal": "width/2"},
+          "y": {"signal": "height/2"},
+          "dy": {"value": 40},
+          "fontSize": {"value": 30}
+        }
+      }
+    }
+  ]
+}
