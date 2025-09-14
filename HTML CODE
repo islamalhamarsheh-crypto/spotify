@@ -1,4 +1,8 @@
-
+var x = 
+CALCULATE(MAX('spotify-2023-with-covers'[cover_url]),
+'spotify-2023-with-covers'[streams]=max('spotify-2023-with-covers'[streams])
+)
+RETURN
 "
 
 <!DOCTYPE html>
@@ -8,18 +12,18 @@
   <title>Image Cropping</title>
   <style>
     .image-container {
-      width: 458px;           /* عرض الحاوية */
-      height: 140px;          /* ارتفاع الحاوية */
-      overflow: hidden;       /* يخفي الأجزاء اللي برّا */
-      border-radius: 15px;    /* زوايا دائرية */
-      position: relative;     /* عشان لو حبيت تضيف عناصر فوق الصورة */
+      width: 458px;           /* container width */
+      height: 140px;          /* container height */
+      overflow: hidden;       /* hides overflow parts */
+      border-radius: 15px;    /* rounded corners */
+      position: relative;     /* in case you want to add elements over the image */
     }
 
     .image {
-      object-fit: cover;        /* يخلي الصورة تغطي الحاوية */
-      object-position: center;  /* يركّز على النص */
-      width: 100%;              /* عرض كامل */
-      height: 100%;             /* ارتفاع كامل */
+      object-fit: cover;        /* makes the image cover the container */
+      object-position: center;  /* centers the image */
+      width: 100%;              /* full width */
+      height: 100%;             /* full height */
       display: block;
     }
   </style>
